@@ -1,47 +1,115 @@
-var addTask = document.getElementById("add_task");
-        var addBtn = document.getElementById("add_btn");
-        var completeItemDiv = document.getElementById("completeItemDiv");
-        var taskList = document.getElementById('task-list');
-        var completeList = document.getElementById('complete-list');
-  function add_task_btn(){
-    addTask.style.visibility='visible';
-    addBtn.style.visibility='visible';
-  }
-  
-  function add_task(){
-    if(addTask.value.length !=0){
-        var ckcbox = document.createElement('input');
-        var label = document.createElement('label')
-        label.style.color="#FDF0F0";
-        label.style.fontSize='23px';
-        var taskItem = document.createElement('li');
-        taskItem.style.listStyleType = 'none'; 
-        label.innerHTML = addTask.value;
+document.addEventListener('DOMContentLoaded', function () {
+    loadTasks();
+});
 
-        
-     
-        taskItem.appendChild(ckcbox).type = 'checkbox';
-        taskItem.appendChild(label);
-         taskList.appendChild(taskItem);
+function addTask() {
+    var taskInput = document.getElementById('taskInput');
+    var taskList = document.getElementById('taskList');
 
-        ckcbox.addEventListener('change', function () {
-                if (this.checked) {
-                    completeItemDiv.style.visibility='visible';
-                    var completeItem  = document.createElement('li');
-                    var span = document.createElement('span');
-                     span.className='complete-text-item-label';
-                    completeItem.style.listStyleType='none';
-                    completeItem.appendChild(span);
-                    completeList.appendChild(completeItem);
-                    span.textContent = " ✓ "+label.innerHTML;
-                    label.remove();
-                    ckcbox.remove();
-                    taskItem.remove();
-                }
-            });
-        addTask.value="";
-        addTask.style.visibility='hidden';
-        addBtn.style.visibility='hidden';
-        
+    if (taskInput.value.trim() === '') {
+        alert('Please enter a task.');
+        return;
     }
-  }
+
+    var li = document.createElement('li');
+    li.innerHTML = '<span>' + taskInput.value + '</span> ' +
+                    '<button onclick="editTask(this)">Edit</button> ' +
+                    '<button onclick="deleteTask(this)">Delete</button>';
+    taskList.appendChild(li);
+
+    
+    saveTasks();
+
+    taskInput.value = '';
+}
+
+function editTask(button) {
+    var li = button.parentNode;
+    var span = li.querySelector('span');
+    var newTask = prompt('Edit task:', span.textContent);
+
+    if (newTask !== null) {
+        span.textContent = newTask;
+        
+        saveTasks();
+    }
+}
+
+function deleteTask(button) {
+    var li = button.parentNode;
+    var taskList = li.parentNode;
+    taskList.removeChild(li);
+
+    
+    saveTasks();
+}
+
+function saveTasks() {
+    var taskList = document.getElementById('taskList');
+    localStorage.setItem('tasks', taskList.innerHTML);
+}
+
+function loadTasks() {
+    var taskList = document.getElementById('taskList');
+    var savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+        taskList.innerHTML = savedTasks;
+    }
+}document.addEventListener('DOMContentLoaded', function () {
+            loadTasks();
+        });
+
+        function addTask() {
+            var taskInput = document.getElementById('taskInput');
+            var taskList = document.getElementById('taskList');
+
+            if (taskInput.value.trim() === '') {
+                alert('Please enter a task.');
+                return;
+            }
+
+            var li = document.createElement('li');
+            li.innerHTML = '<span>' + taskInput.value + '</span> ' +
+                            '<button onclick="editTask(this)">Edit</button> ' +
+                            '<button onclick="deleteTask(this)">Delete</button>';
+            taskList.appendChild(li);
+
+            
+            saveTasks();
+
+            taskInput.value = '';
+        }
+
+        function editTask(button) {
+            var li = button.parentNode;
+            var span = li.querySelector('span');
+            var newTask = prompt('Edit task:', span.textContent);
+
+            if (newTask !== null) {
+                span.textContent = newTask;
+                
+                saveTasks();
+            }
+        }
+
+        function deleteTask(button) {
+            var li = button.parentNode;
+            var taskList = li.parentNode;
+            taskList.removeChild(li);
+
+            
+            saveTasks();
+        }
+
+        function saveTasks() {
+            var taskList = document.getElementById('taskList');
+            localStorage.setItem('tasks', taskList.innerHTML);
+        }
+
+        function loadTasks() {
+            var taskList = document.getElementById('taskList');
+            var savedTasks = localStorage.getItem('tasks');
+            if (savedTasks) {
+                taskList.innerHTML = savedTasks;
+            }
+        }
