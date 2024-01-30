@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Clock</title>
 </head>
-<body>
-   <h1 onload="start_clk();">00:00:00</h1>
+<body onload="start_clk(document.getElementById('clock'))">
+    <h1 id="clock">00:00:00</h1>
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
-</html>
+</html>  
